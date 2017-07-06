@@ -1,0 +1,4 @@
+com\fs\app\automation\page\action\CheckNavigationAction.class
+TestRunner\TestRunner_FS.class
+com\fs\app\automation\page\object\PageObjects.class
+com\fs\app\automation\step\definition\CheckHeaderNavigationSteps.class
