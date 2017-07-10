@@ -9,7 +9,7 @@ import org.junit.runner.RunWith;
 @CucumberOptions(
 		features = "src\\main\\resources"
 		,glue = { "com.fs.app.automation.step.definition" }
-		,tags = {"@Nav"}
+		,tags = {"@SelectNFL"}
 		)
 
 

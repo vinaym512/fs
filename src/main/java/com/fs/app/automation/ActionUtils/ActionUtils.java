@@ -10,8 +10,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
+import java.util.List;
 
 import static java.lang.System.getProperty;
 
@@ -22,6 +21,8 @@ public class ActionUtils {
 
     private static int positionX = 0;
     private static int positionY = 0;
+
+
     public enum Direction {UP, DOWN, LEFT, RIGHT}
     public static Dimension size;
     public static int[] position = new int[2];
@@ -29,11 +30,7 @@ public class ActionUtils {
     private static AppiumDriver driver;
 
     static {
-        try {
-           driver = DriverUtils.getDriver();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
+        driver = DriverUtils.getAppDriver();
     }
 
     public static void setHorizontalSwipeRatio(AppiumDriver driver) throws InterruptedException {
@@ -87,17 +84,40 @@ public class ActionUtils {
 
     public static WebElement findElementBy(By by){
         WebDriverWait wait = new WebDriverWait(driver, 20);
-        wait.until(ExpectedConditions.elementToBeClickable(by));
-        return driver.findElement(by);
+        return wait.until(ExpectedConditions.elementToBeClickable(by));
     }
 
     public static void clickBy(By by){
         findElementBy(by).click();
     }
 
-    public static void takeScreenShot(String element) throws IOException, URISyntaxException {
-        File src = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-        FileUtils.copyFile(src, new File("target/screenshots/page" + element + ".png"));
+    public static void selectfromDropdown(By by, By by2, String sport) {
+        /*Select dropdown = new Select(driver.findElement(by));
+        dropdown.selectByVisibleText(visibleText);*/
+
+        /*WebElement dropdown = findElementBy(by);
+        dropdown.sendKeys(visibleText);
+        */
+
+        WebElement select = findElementBy(by);
+        List<WebElement> options = select.findElements(by2);
+
+        for (WebElement option : options) {
+
+            if(sport.equals(option.getText().trim()))
+
+                option.click();
+        }
+
     }
 
+
+    public static void takeScreenShot(String element) {
+        File src = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+        try {
+            FileUtils.copyFile(src, new File("target/screenshots/page" + element + ".png"));
+        } catch (IOException e) {
+            System.out.println("Screenshot error " + e.getMessage());
+        }
+    }
 }

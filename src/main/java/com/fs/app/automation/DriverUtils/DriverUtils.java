@@ -9,9 +9,9 @@ import java.net.URL;
 
 public class DriverUtils {
 	
-	private static AppiumDriver driver;
+	private static AppiumDriver driver = null;
 
-	static {
+	/*static {
 		try {
 			driver = getDriver();
 			System.out.println("+++++++++++++++++++++++Driver Started+++++++++++++++++++");
@@ -20,13 +20,14 @@ public class DriverUtils {
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
-	}
+	}*/
 
 	public static AppiumDriver getDriver() throws MalformedURLException {
-            return getAndroidDriver();
+		return getAndroidDriver();
+
         }
 
-	private static AppiumDriver getAndroidDriver() throws MalformedURLException {
+	public static AppiumDriver getAndroidDriver() throws MalformedURLException {
 
 		DesiredCapabilities cap = new DesiredCapabilities();
 		cap.setCapability("platformName","Android");
@@ -35,9 +36,13 @@ public class DriverUtils {
 		cap.setCapability("appPackage","com.netcosports.and.foxsports");
 		cap.setCapability("appActivity",".activities.InitActivity");
 		cap.setCapability("noReset","true");
-		cap.setCapability("newCommandTimeout","2");
+		cap.setCapability("newCommandTimeout","3000");
 		cap.setCapability("clearSystemFiles","true");
-		return new AndroidDriver(new URL("http://0.0.0.0:4723/wd/hub"), cap);
+
+		driver = new AndroidDriver(new URL("http://0.0.0.0:4723/wd/hub"), cap);
+		System.out.println("+++++++++++++++++++++++Driver Started+++++++++++++++++++");
+
+		return driver;
 
 	}
 
@@ -45,6 +50,11 @@ public class DriverUtils {
 		System.out.println();
 		return null;
 	}
+
+	public static AppiumDriver getAppDriver(){
+    	return driver;
+	}
+
 
     public static void closeDriver(){
 		driver.quit();
