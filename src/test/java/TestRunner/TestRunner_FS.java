@@ -9,17 +9,14 @@ import org.junit.runner.RunWith;
 @CucumberOptions(
 		features = "src\\main\\resources"
 		,glue = { "com.fs.app.automation.step.definition" }
-		,tags = {"@SelectNFL"}
+		,tags = {"@SelectNFL, @Nav"}
 		)
 
 
 public class TestRunner_FS {
 
-	/*@BeforeClass
-	public static void initialise() {
-		System.setProperty("PLATFORM", "Android");
-	}
-	*/
+	//@BeforeClass
+
 	/*@AfterClass
 	public static void close() {
 		DriverUtils.closeDriver();
@@ -31,4 +28,4 @@ public class TestRunner_FS {
 //your test scripts logic...
 		service.stop();
 	}*/
-} 
+}

@@ -2,14 +2,21 @@ package com.fs.app.automation.DriverUtils;
 
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
+import org.openqa.selenium.NoSuchSessionException;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.support.events.EventFiringWebDriver;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class DriverUtils {
+public class DriverUtils extends EventFiringWebDriver {
 	
 	private static AppiumDriver driver = null;
+
+	public DriverUtils(WebDriver driver) {
+		super(driver);
+	}
 
 	/*static {
 		try {
@@ -36,7 +43,8 @@ public class DriverUtils {
 		cap.setCapability("appPackage","com.netcosports.and.foxsports");
 		cap.setCapability("appActivity",".activities.InitActivity");
 		cap.setCapability("noReset","true");
-		cap.setCapability("newCommandTimeout","3000");
+		cap.setCapability("fullReset","false");
+		//cap.setCapability("newCommandTimeout","3000");
 		cap.setCapability("clearSystemFiles","true");
 
 		driver = new AndroidDriver(new URL("http://0.0.0.0:4723/wd/hub"), cap);
@@ -56,11 +64,26 @@ public class DriverUtils {
 	}
 
 
-    public static void closeDriver(){
-		driver.quit();
+    public static void closeDriver() {
+		//driver.close();
+		try {
+			driver.close();
+		} catch (NoSuchSessionException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void closeNOpenDriver(){
+		//driver.close();
+		try {
+			driver.closeApp();
+			driver.launchApp();
+		} catch(NoSuchSessionException e){
+			e.printStackTrace();
+		}
 
 
-	//stop the appium server
+		//stop the appium server
 	//	service.stop();
 	}
 

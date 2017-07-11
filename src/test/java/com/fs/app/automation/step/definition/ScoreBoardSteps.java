@@ -12,6 +12,10 @@ public class ScoreBoardSteps {
 	}
 	@Then("^I select \"([^\"]*)\" from dropdown list$")
     public static void selectSport(String sport) {
-        ScoreBoardAction.selectSport(sport);
+        try {
+            ScoreBoardAction.selectSport(sport);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }

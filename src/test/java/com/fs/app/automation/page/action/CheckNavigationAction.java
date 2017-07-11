@@ -29,7 +29,8 @@ public class CheckNavigationAction extends HomePageObjects {
     }
 
     public static void closeDriver() {
-        DriverUtils.closeDriver();
+        //DriverUtils.closeDriver();
+        DriverUtils.closeNOpenDriver();
         System.out.println("++++++++++++++++++Close driver+++++++++++++++++++++++++++++");
     }
 

@@ -91,26 +91,18 @@ public class ActionUtils {
         findElementBy(by).click();
     }
 
-    public static void selectfromDropdown(By by, By by2, String sport) {
-        /*Select dropdown = new Select(driver.findElement(by));
-        dropdown.selectByVisibleText(visibleText);*/
-
-        /*WebElement dropdown = findElementBy(by);
-        dropdown.sendKeys(visibleText);
-        */
-
-        WebElement select = findElementBy(by);
-        List<WebElement> options = select.findElements(by2);
+    public static void selectfromDropdown(By byHeader, By byValue, String sportToSelect) {
+        findElementBy(byHeader).click();
+        List<WebElement> options = driver.findElements(byValue);
 
         for (WebElement option : options) {
-
-            if(sport.equals(option.getText().trim()))
-
+            if(sportToSelect.equals(option.getText().trim()))
+            {
                 option.click();
+                break;
+            }
         }
-
     }
-
 
     public static void takeScreenShot(String element) {
         File src = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
