@@ -12,7 +12,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 public class DriverUtils extends EventFiringWebDriver {
-	
+
 	private static RemoteWebDriver driver = null;
 
 	public DriverUtils(WebDriver driver) {
@@ -20,74 +20,67 @@ public class DriverUtils extends EventFiringWebDriver {
 	}
 
 	static {
-		try {
 			getDriver();
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
 		}
+
+	public static RemoteWebDriver getDriver() {
+		return getAndroidDriver();
 	}
 
-	public static RemoteWebDriver getDriver() throws MalformedURLException {
-		return getAndroidDriver();
-
-        }
-
-	public static RemoteWebDriver getAndroidDriver() throws MalformedURLException {
-
+	public static RemoteWebDriver getAndroidDriver() {
 		DesiredCapabilities cap = new DesiredCapabilities();
 		cap.setCapability("platformName","Android");
-		cap.setCapability("platformVersion","4.4");
-		cap.setCapability("deviceName","6LZ54P5LTSLJMNAE");
-        //cap.setCapability("deviceName","ce03171312024a3303");6LZ54P5LTSLJMNAE
-        cap.setCapability("appPackage","com.netcosports.and.foxsports");
+		cap.setCapability("platformVersion","7.0");
+		//cap.setCapability("deviceName","6LZ54P5LTSLJMNAE");
+		cap.setCapability("deviceName","ce03171312024a3303");
+		cap.setCapability("appPackage","com.netcosports.and.foxsports");
 		cap.setCapability("appActivity",".activities.InitActivity");
 		cap.setCapability("noReset","true");
 		cap.setCapability("fullReset","false");
-		//cap.setCapability("newCommandTimeout","3000");
+		//cap.setCapability("newCommandTimeout","300");
 		cap.setCapability("clearSystemFiles","true");
 
-		driver = new AndroidDriver(new URL("http://0.0.0.0:4723/wd/hub"), cap);
-        System.out.println("+++++++++++++++ "+driver.getSessionId());
-		System.out.println("+++++++++++++++++++++++Driver Started+++++++++++++++++++");
+		try {
+			driver = new AndroidDriver(new URL("http://0.0.0.0:4723/wd/hub"), cap);
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+		System.out.println("+++++++++++++++ "+driver.getSessionId());
 
 		return driver;
-
 	}
 
-    private static AppiumDriver getiOSDriver(){
+	private static AppiumDriver getiOSDriver(){
 		System.out.println();
 		return null;
 	}
 
 	public static RemoteWebDriver getAppDriver(){
-    	return driver;
+		return driver;
 	}
 
+	public static void openApp(){
+		((AndroidDriver)driver).startActivity("com.netcosports.and.foxsports", ".activities.InitActivity");
+	}
 
-    public static void closeDriver() {
-		//driver.close();
+	public static void closeApp(){
+		((AppiumDriver)driver).closeApp();
+	}
+
+	public static void quitDriver() {
 		try {
-			driver.close();
-            System.out.println("+++++++++++++++++++++++Driver Closed+++++++++++++++++++");
-			//driver.quit();
+			driver.quit();
 		} catch (NoSuchSessionException e) {
 			e.printStackTrace();
 		}
 	}
 
 	public static void closeNOpenDriver(){
-		//driver.close();
 		try {
-			driver.close();
-			//driver.launchApp();
+			driver.switchTo().defaultContent();
 		} catch(NoSuchSessionException e){
 			e.printStackTrace();
 		}
-
-
-		//stop the appium server
-	//	service.stop();
 	}
-
 
 }

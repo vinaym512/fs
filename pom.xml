@@ -3,6 +3,12 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    <!--Parent for all require dependencies-->
+    <parent>
+        <groupId>au.com.foxsports</groupId>
+        <artifactId>fs-test-automation-pom</artifactId>
+        <version>1.3.0-SNAPSHOT</version>
+    </parent>
 
     <groupId>Test</groupId>
     <artifactId>FoxSports</artifactId>
@@ -14,15 +20,9 @@
 
     <dependencies>
         <!--For cucumber -->
-        <dependency>
+        <!--<dependency>
             <groupId>info.cukes</groupId>
             <artifactId>cucumber-java</artifactId>
-            <version>1.2.4</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>info.cukes</groupId>
-            <artifactId>cucumber-junit</artifactId>
             <version>1.2.4</version>
             <scope>test</scope>
         </dependency>
@@ -47,14 +47,21 @@
         </dependency>
 
 
-        <!--For Junit -->
+        &lt;!&ndash;For Junit &ndash;&gt;
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.12</version>
             <scope>test</scope>
+        </dependency>-->
+        <dependency>
+            <groupId>info.cukes</groupId>
+            <artifactId>cucumber-junit</artifactId>
+            <version>1.2.4</version>
+            <scope>test</scope>
         </dependency>
-        <!-- For Selenium -->
+
+        <!--For Selenium-->
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
@@ -71,11 +78,144 @@
             <groupId>io.appium</groupId>
             <artifactId>java-client</artifactId>
             <version>4.1.2</version>
-
         </dependency>
-        
-
+        <!--Add dependency of test automation framework-->
+        <dependency>
+            <groupId>au.com.foxsports</groupId>
+            <artifactId>fs-test-automation-framework</artifactId>
+            <version>1.3.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.2</version>
+            </plugin>
+            </plugins>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>exec-maven-plugin</artifactId>
+                    <version>${exec-maven-plugin.version}</version>
+                    <configuration>
+                        <classpathScope>test</classpathScope>
+                        <mainClass>cucumber.cli.Main</mainClass>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>${maven-surefire-plugin.version}</version>
+                    <configuration>
+                        <testFailureIgnore>false</testFailureIgnore>
+                        <properties>
+                            <property>
+                                <name>junit</name>
+                                <value>true</value>
+                            </property>
+                            <!--<property>
+                                <name>listener</name>
+                                <value>com.fs.app.automation.BaseTest</value>
+                            </property>
+                            --><property>
+                                <name>isBamboo</name>
+                                <value>${isBamboo}</value>
+                            </property>
+                            <property>
+                                <name>isSeleniumGrid</name>
+                                <value>${isSeleniumGrid}</value>
+                            </property>
+                            <property>
+                                <name>seleniumGridUrl</name>
+                                <value>${seleniumGridUrl}</value>
+                            </property>
+                            <property>
+                                <name>browser</name>
+                                <value>${browser}</value>
+                            </property>
+                            <property>
+                                <name>isZephyrStatusUpdate</name>
+                                <value>${isZephyrStatusUpdate}</value>
+                            </property>
+                            <property>
+                                <name>stopExecutionOnFail</name>
+                                <value>${stopExecutionOnFail}</value>
+                            </property>
+                            <property>
+                                <name>jiraProjectKeys</name>
+                                <value>${jiraProjectKeys}</value>
+                            </property>
+                            <property>
+                                <name>jiraVersionName</name>
+                                <value>${jiraVersionName}</value>
+                            </property>
+                            <property>
+                                <name>testCycleName</name>
+                                <value>${testCycleName}</value>
+                            </property>
+                            <property>
+                                <name>testCycleDescription</name>
+                                <value>${testCycleDescription}</value>
+                            </property>
+                            <property>
+                                <name>testCycleBuild</name>
+                                <value>${testCycleBuild}</value>
+                            </property>
+                            <property>
+                                <name>testCycleEnvironment</name>
+                                <value>${testCycleEnvironment}</value>
+                            </property>
+                        </properties>
+                        <includes>
+                            <include>**/*Test*.*</include>
+                        </includes>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${maven-compiler-plugin.version}</version>
+                    <configuration>
+                        <source>${maven.compiler.source}</source>
+                        <target>${maven.compiler.target}</target>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-checkstyle-plugin</artifactId>
+                    <version>${maven-checkstyle-plugin.version}</version>
+                    <dependencies>
+                        <dependency>
+                            <groupId>com.puppycrawl.tools</groupId>
+                            <artifactId>checkstyle</artifactId>
+                            <version>${puppycrawl-checkstyle.version}</version>
+                        </dependency>
+                    </dependencies>
+                    <configuration>
+                        <configLocation>${checkstyle.config.location}</configLocation>
+                        <consoleOutput>true</consoleOutput>
+                        <failsOnError>true</failsOnError>
+                        <failOnViolation>true</failOnViolation>
+                        <suppressionsLocation>${checkstyle.suppressions.location}</suppressionsLocation>
+                        <sourceDirectory>${checkstyle.sourceDirectory.location}</sourceDirectory>
+                        <includeTestSourceDirectory>true</includeTestSourceDirectory>
+                        <testSourceDirectory>${checkstyle.testSourceDirectory.location}</testSourceDirectory>
+                        <includeResources>false</includeResources>
+                        <includeTestResources>false</includeTestResources>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>check</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
 
 
 </project>
